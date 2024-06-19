@@ -1,0 +1,47 @@
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.post h2 {
+    margin: 10;
+    font-size: 20px;
+    color: #333;
+}
+
+.post p {
+    margin: 10px 0;
+    color: #666;
+}
+
+h1 {
+    font-size: 5.5em;
+}
+
+.form-control {
+    font-size: 1.25rem;
+}
+
+.post-card .card-text {
+    font-size: 1.25rem;
+}
+
+.list-group-item a {
+    font-size: 1.5rem;
+}
+
+.btn {
+    font-size: 1.5em;
+    padding: 7px 10px;
+}
+
+textarea {
+    width: 100%;
+}

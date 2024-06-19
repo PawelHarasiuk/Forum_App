@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4" style="font-size: 4rem;">{{ thread.title }}</h1>
+    <form id="createPostForm" method="POST" class="mb-4">
+        <div class="form-group">
+            <textarea name="content" class="form-control" placeholder="Write your post here..." required style="height: 200px; font-size: 1.25rem;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Post</button>
+    </form>
+    <div class="posts">
+        {% for post in posts %}
+        <div class="post card my-2">
+            <div class="card-body">
+                <p class="card-text" style="font-size: 1.25rem;">{{ post.content }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <button class="btn btn-success btn-sm" onclick="vote('upvote', {{ post.id }})">Upvote</button>
+                        <button class="btn btn-danger btn-sm" onclick="vote('downvote', {{ post.id }})">Downvote</button>
+                    </div>
+                    <div>
+                        <span class="badge bg-success me-2">Upvotes: <span id="upvotes-{{ post.id }}">{{ post.upvotes }}</span></span>
+                        <span class="badge bg-danger">Downvotes: <span id="downvotes-{{ post.id }}">{{ post.downvotes }}</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.getElementById('createPostForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch("{{ url_for('forum.thread', id=thread.id) }}", {
+        method: 'POST',
+        body: new FormData(this)
+    }).then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              location.reload();
+          } else {
+              alert('Failed to create post');
+          }
+      });
+});
+
+function vote(type, postId) {
+    fetch(`/${type}/${postId}`).then(response => response.json()).then(data => {
+        if (data.success) {
+            document.getElementById(`${type}s-${postId}`).innerText = data.count;
+        } else {
+            alert('Failed to update vote');
+        }
+    });
+}
+</script>
+{% endblock %}

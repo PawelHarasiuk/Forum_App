@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Threads</h1>
+<form method="POST">
+    <input type="text" name="title" placeholder="Thread title" required>
+    <input type="submit" value="Create Thread">
+</form>
+
+<style>
+    .thread-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* Space between tiles */
+        padding: 20px;
+    }
+    .thread-item {
+        flex: 1 0 30%; /* Adjust this value to control the column width */
+        box-sizing: border-box;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .thread-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .thread-item .thread-title {
+        font-size: 1.5em; /* Increase the font size of the thread titles */
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: block; /* Ensure title takes full width */
+        color: black !important; /* Set text color to black */
+        text-decoration: none; /* Remove underline from links */
+    }
+    .thread-item .thread-info {
+        color: black; /* Set text color to black for info */
+        margin-top: 5px;
+    }
+</style>
+
+<div class="thread-list">
+    {% for thread in threads %}
+    <div class="thread-item">
+        <a class="thread-title" href="{{ url_for('forum.thread', id=thread.id) }}">{{ thread.title }}</a>
+        <div class="thread-info">Upvotes: {{ thread.upvotes }}</div>
+        <div class="thread-info">Downvotes: {{ thread.downvotes }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
